@@ -1,5 +1,7 @@
+import SigninForm from "@/components/authComponents/signin/signinForm";
+
 const Home = () => {
-  return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
+  return <SigninForm />
 };
 
 export default Home;
