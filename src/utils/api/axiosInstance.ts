@@ -44,8 +44,9 @@ axiosInstance.interceptors.response.use(
         case 401:
           localStorage.removeItem('token');
           localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
           if (typeof window !== 'undefined') {
-            window.location.href = '/signin';
+            window.location.href = '/';
           }
           break;
         case 403:
