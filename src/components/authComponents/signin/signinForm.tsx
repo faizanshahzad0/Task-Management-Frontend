@@ -22,14 +22,7 @@ const SigninForm = () => {
   });
 
   const onSubmit: SubmitHandler<SigninTypes> = (data) => {
-    signin(data, {
-      onSuccess: () => {
-        reset();
-      },
-      onError: (error) => {
-        console.log(error);
-      },
-    });
+    signin(data);
   };
 
   return (
