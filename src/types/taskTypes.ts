@@ -51,7 +51,7 @@ export interface TasksResponse {
 export interface TaskModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: CreateTaskInput) => void;
+  onSubmit: (data: CreateTaskInput | UpdateTaskInput) => void;
   task?: Task | null;
   isLoading?: boolean;
 }

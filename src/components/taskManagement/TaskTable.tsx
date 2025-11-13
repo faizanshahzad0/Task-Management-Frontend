@@ -194,7 +194,7 @@ const TaskTable = ({
         isLoading={isDeleting}
       />
       {/* Filter Section */}
-      <div className="bg-slate-700 rounded-lg p-4 border border-slate-600 mb-4">
+      <div className="bg-slate-700 rounded-lg p-4 border border-slate-600">
         <div className={`flex items-center justify-between ${showFilters ? 'mb-4' : ''}`}>
           <h3 className="text-sm font-semibold text-white">Filter Tasks</h3>
           <div className="flex items-center gap-3">
@@ -328,6 +328,7 @@ const TaskTable = ({
           <DebouncedInput
             value={globalFilter ?? ''}
             onChange={(value) => setGlobalFilter(String(value))}
+            placeholder='Search task...'
           />
         )}
         muiTableContainerProps={{

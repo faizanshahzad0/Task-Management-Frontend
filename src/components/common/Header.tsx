@@ -14,9 +14,6 @@ const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const authPages = ['/', '/signup', '/signin'];
-  const shouldHideHeader = authPages.includes(pathname);
-
   const { useGetLoggedInUser } = useAuthHooks();
   const { data: userData, isLoading: isLoadingUser, error: userError, isFetching } = useGetLoggedInUser();
 
@@ -57,12 +54,8 @@ const Header = () => {
     };
   }, [isDropdownOpen]);
 
-  if (shouldHideHeader) {
-    return null;
-  }
-
   return (
-    <header className="bg-slate-800 border-b border-slate-700 sticky top-0 z-40">
+    <header className="bg-slate-800 border-b border-slate-700 fixed top-0 left-0 right-0 z-40">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo/Title */}
