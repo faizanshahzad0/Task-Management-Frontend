@@ -2,15 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { MaterialReactTable, MRT_Cell, MRT_SortingState, type MRT_Row } from 'material-react-table';
-import type { Task } from '@/types/taskTypes';
-import { TASKS_STATUSES, TASKS_PRIORITIES } from '@/utils/enums/taskStatus';
+import type { User } from '@/types/userTypes';
+import { USER_ROLES } from '@/utils/enums/userRoles';
 import DeleteConfirmationModal from '@/components/common/deleteConfirmationModal';
-import type { TaskTableProps } from '@/types/taskTypes';
-import { getStatusBadgeColor, getPriorityBadgeColor, formatDate } from '@/utils/utility/tasks';
+import type { UserTableProps } from '@/types/userTypes';
 import { DebouncedInput } from '../common/debounceInput';
 
-const TaskTable = ({
-  tasksData,
+const UserTable = ({
+  usersData,
   totalRecords,
   pagination,
   setPagination,
@@ -24,37 +23,37 @@ const TaskTable = ({
   onEdit,
   onDelete,
   isDeleting = false,
-}: TaskTableProps) => {
+}: UserTableProps) => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [wasDeleting, setWasDeleting] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
     if (wasDeleting && !isDeleting) {
       setDeleteModalOpen(false);
-      setSelectedTask(null);
+      setSelectedUser(null);
       setWasDeleting(false);
     }
   }, [isDeleting, wasDeleting]);
 
-  const handleDeleteClick = (task: Task) => {
-    setSelectedTask(task);
+  const handleDeleteClick = (user: User) => {
+    setSelectedUser(user);
     setDeleteModalOpen(true);
   };
 
-  const handleEditClick = (task: Task) => {
-    onEdit(task);
+  const handleEditClick = (user: User) => {
+    onEdit(user);
   };
 
   const handleDeleteConfirm = () => {
-    if (selectedTask) {
+    if (selectedUser) {
       setWasDeleting(true);
-      onDelete(selectedTask);
+      onDelete(selectedUser);
     }
   };
 
-  const handleFilterChange = (key: 'status' | 'priority' | 'dueDate', value: string) => {
+  const handleFilterChange = (key: 'role', value: string) => {
     setFilters((prev) => ({
       ...prev,
       [key]: value || undefined,
@@ -65,57 +64,59 @@ const TaskTable = ({
     setFilters({});
   };
 
-  const hasActiveFilters = filters.status || filters.priority || filters.dueDate;
+  const hasActiveFilters = filters.role;
+
+  const getRoleBadgeColor = (role: string) => {
+    switch (role) {
+      case USER_ROLES.ADMIN:
+        return 'bg-purple-500/20 text-purple-400 border border-purple-500/30';
+      case USER_ROLES.USER:
+      default:
+        return 'bg-blue-500/20 text-blue-400 border border-blue-500/30';
+    }
+  };
+
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleDateString();
+  };
 
   const columns = [
     {
-      accessorKey: 'title',
-      header: 'Title',
-      size: 200,
+      accessorKey: 'firstName',
+      header: 'First Name',
+      size: 150,
     },
     {
-      accessorKey: 'description',
-      header: 'Description',
-      size: 300,
-      Cell: ({ cell }: { cell: MRT_Cell<Task> }) => (
-        <div className="max-w-xs truncate">{cell.getValue<string>()}</div>
-      ),
+      accessorKey: 'lastName',
+      header: 'Last Name',
+      size: 150,
     },
     {
-      accessorKey: 'status',
-      header: 'Status',
+      accessorKey: 'email',
+      header: 'Email',
+      size: 250,
+    },
+    {
+      accessorKey: 'role',
+      header: 'Role',
       size: 120,
-      Cell: ({ cell }: { cell: MRT_Cell<Task> }) => {
-        const status = cell.getValue<string>();
+      Cell: ({ cell }: { cell: MRT_Cell<User> }) => {
+        const role = cell.getValue<string>();
         return (
           <span
-            className={`px-3 py-1 text-xs font-semibold rounded-full ${getStatusBadgeColor(status)}`}
+            className={`px-3 py-1 text-xs font-semibold rounded-full ${getRoleBadgeColor(role)}`}
           >
-            {status}
+            {role}
           </span>
         );
       },
     },
     {
-      accessorKey: 'priority',
-      header: 'Priority',
-      size: 120,
-      Cell: ({ cell }: { cell: MRT_Cell<Task> }) => {
-        const priority = cell.getValue<string>();
-        return (
-          <span
-            className={`px-3 py-1 text-xs font-semibold rounded-full ${getPriorityBadgeColor(priority)}`}
-          >
-            {priority}
-          </span>
-        );
-      },
-    },
-    {
-      accessorKey: 'dueDate',
-      header: 'Due Date',
-      size: 120,
-      Cell: ({ cell }: { cell: MRT_Cell<Task> }) => (
+      accessorKey: 'createdAt',
+      header: 'Created At',
+      size: 150,
+      Cell: ({ cell }: { cell: MRT_Cell<User> }) => (
         <span>{formatDate(cell.getValue<string>())}</span>
       ),
     },
@@ -125,8 +126,8 @@ const TaskTable = ({
       enableSorting: false,
       enableColumnFilter: false,
       size: 100,
-      Cell: ({ row }: { row: MRT_Row<Task> }) => {
-        const isDeletingThisTask = isDeleting && selectedTask?._id === row.original._id;
+      Cell: ({ row }: { row: MRT_Row<User> }) => {
+        const isDeletingThisUser = isDeleting && selectedUser?._id === row.original._id;
         return (
           <div className="flex items-center gap-2">
             <button
@@ -155,7 +156,7 @@ const TaskTable = ({
               className="p-2 text-red-400 hover:text-red-300 rounded-lg hover:bg-red-500/20 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed relative"
               title="Delete"
             >
-              {isDeletingThisTask ? (
+              {isDeletingThisUser ? (
                 <div className="w-5 h-5 border-2 border-red-400 border-t-transparent rounded-full animate-spin" />
               ) : (
                 <svg
@@ -185,18 +186,18 @@ const TaskTable = ({
         isOpen={deleteModalOpen}
         onClose={() => {
           setDeleteModalOpen(false);
-          setSelectedTask(null);
+          setSelectedUser(null);
         }}
         onConfirm={handleDeleteConfirm}
-        title="Delete Task"
-        description={`Are you sure you want to delete the task "${selectedTask?.title}"? This action cannot be undone.`}
-        deleteValue={selectedTask?.title}
+        title="Delete User"
+        description={`Are you sure you want to delete the user "${selectedUser?.firstName} ${selectedUser?.lastName}"? This action cannot be undone.`}
+        deleteValue={`${selectedUser?.firstName} ${selectedUser?.lastName}`}
         isLoading={isDeleting}
       />
       {/* Filter Section */}
       <div className="bg-slate-700 rounded-lg p-4 border border-slate-600">
         <div className={`flex items-center justify-between ${showFilters ? 'mb-4' : ''}`}>
-          <h3 className="text-sm font-semibold text-white">Filter Tasks</h3>
+          <h3 className="text-sm font-semibold text-white">Filter Users</h3>
           <div className="flex items-center gap-3">
             <button
               onClick={() => setShowFilters(!showFilters)}
@@ -223,7 +224,7 @@ const TaskTable = ({
               Filters
               {hasActiveFilters && (
                 <span className="ml-1 px-2 py-0.5 text-xs bg-white/20 rounded-full">
-                  {[filters.status, filters.priority, filters.dueDate].filter(Boolean).length}
+                  1
                 </span>
               )}
             </button>
@@ -250,55 +251,25 @@ const TaskTable = ({
                 : '-translate-y-2 scale-95'
             }`}
           >
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-4">
               <div>
                 <label className="block mb-2 text-xs font-medium text-slate-300">
-                  Status
+                  Role
                 </label>
                 <select
-                  value={filters.status || ''}
-                  onChange={(e) => handleFilterChange('status', e.target.value)}
+                  value={filters.role || ''}
+                  onChange={(e) => handleFilterChange('role', e.target.value)}
                   className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white text-sm transition-all"
                 >
                   <option value="" className="bg-slate-800">
-                    All Statuses
+                    All Roles
                   </option>
-                  {Object.values(TASKS_STATUSES).map((status) => (
-                    <option key={status} value={status} className="bg-slate-800">
-                      {status}
+                  {Object.values(USER_ROLES).map((role) => (
+                    <option key={role} value={role} className="bg-slate-800">
+                      {role}
                     </option>
                   ))}
                 </select>
-              </div>
-              <div>
-                <label className="block mb-2 text-xs font-medium text-slate-300">
-                  Priority
-                </label>
-                <select
-                  value={filters.priority || ''}
-                  onChange={(e) => handleFilterChange('priority', e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white text-sm transition-all"
-                >
-                  <option value="" className="bg-slate-800">
-                    All Priorities
-                  </option>
-                  {Object.values(TASKS_PRIORITIES).map((priority) => (
-                    <option key={priority} value={priority} className="bg-slate-800">
-                      {priority}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block mb-2 text-xs font-medium text-slate-300">
-                  Due Date
-                </label>
-                <input
-                  type="date"
-                  value={filters.dueDate || ''}
-                  onChange={(e) => handleFilterChange('dueDate', e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white text-sm transition-all [color-scheme:dark]"
-                />
               </div>
             </div>
           </div>
@@ -306,12 +277,12 @@ const TaskTable = ({
       </div>
       <MaterialReactTable
         columns={columns}
-        data={tasksData ?? []}
+        data={usersData ?? []}
         manualPagination={true}
         rowCount={totalRecords}
         enableGlobalFilter={false}
         enableColumnFilters={true}
-        enableSorting={tasksData && tasksData.length > 1 ? true : false}
+        enableSorting={usersData && usersData.length > 1 ? true : false}
         manualSorting={true}
         enableRowSelection={false}
         positionToolbarAlertBanner="none"
@@ -328,7 +299,7 @@ const TaskTable = ({
           <DebouncedInput
             value={globalFilter ?? ''}
             onChange={(value) => setGlobalFilter(String(value))}
-            placeholder='Search task...'
+            placeholder='Search user...'
           />
         )}
         muiTableContainerProps={{
@@ -350,7 +321,7 @@ const TaskTable = ({
             borderBottom: '1px solid #334155',
             fontWeight: 600,
             fontSize: '0.875rem',
-                '& .MuiTableSortLabel-root': {
+            '& .MuiTableSortLabel-root': {
               color: '#94a3b8 !important',
               '&:hover': {
                 color: '#f1f5f9 !important',
@@ -550,7 +521,7 @@ const TaskTable = ({
           },
         }}
         localization={{
-          noRecordsToDisplay: 'No tasks found',
+          noRecordsToDisplay: 'No users found',
           rowsPerPage: 'Rows per page',
           of: 'of',
         }}
@@ -559,4 +530,5 @@ const TaskTable = ({
   );
 };
 
-export default TaskTable;
+export default UserTable;
+

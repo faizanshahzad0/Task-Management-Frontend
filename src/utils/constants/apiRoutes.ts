@@ -6,9 +6,10 @@ export const API_ROUTES = {
 
   USERS: {
     getAllUsers: "/users",
-    getUserById: "/users/:id",
-    updateUser: "/users/:id",
-    deleteUser: "/users/:id",
+    createUser: "/user",
+    getUserById: "/user/:id",
+    updateUser: "/user/:id",
+    deleteUser: "/user/:id",
     loggedInUser: "/me",
   },
 
