@@ -1,0 +1,24 @@
+{
+  "default_branch": "main",
+  "branches": [
+    "dev",
+    "feat/auth-ui-integration",
+    "layout-users-crud-integration",
+    "main",
+    "task-manage-ui"
+  ],
+  "parent": {
+    "dev": "main",
+    "feat/auth-ui-integration": "main",
+    "layout-users-crud-integration": "main",
+    "main": null,
+    "task-manage-ui": "main"
+  },
+  "order": [
+    "main",
+    "dev",
+    "feat/auth-ui-integration",
+    "layout-users-crud-integration",
+    "task-manage-ui"
+  ]
+}
