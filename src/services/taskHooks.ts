@@ -11,30 +11,41 @@ import type { CreateTaskInput, UpdateTaskInput, TasksResponse } from '@/types/ta
 export const useTaskHooks = () => {
   const queryClient = useQueryClient();
 
-  const useGetTasks = (
-    page: number = 1,
-    pageSize: number = 10,
-    search?: string,
-    filters?: { status?: string; priority?: string; dueDate?: string }
-  ) => {
+  const useGetTasks = (options?: {
+    page?: number;
+    limit?: number;
+    search?: string;
+    sortBy?: string;
+    sortOrder?: string;
+    status?: string;
+    priority?: string;
+    dueDate?: string;
+  }) => {
+    const { page = 1, limit = 10, search, sortBy, sortOrder, status, priority, dueDate } = options || {};
     return useQuery({
-      queryKey: ['tasks', page, pageSize, search, filters],
+      queryKey: ['tasks', page, limit, search, sortBy, sortOrder, status, priority, dueDate],
       queryFn: async (): Promise<TasksResponse> => {
         const params = new URLSearchParams({
           page: page.toString(),
-          pageSize: pageSize.toString(),
+          limit: limit.toString(),
         });
         if (search) {
           params.append('search', search);
         }
-        if (filters?.status) {
-          params.append('status', filters.status);
+        if (sortBy) {
+          params.append('sortBy', sortBy);
         }
-        if (filters?.priority) {
-          params.append('priority', filters.priority);
+        if (sortOrder) {
+          params.append('sortOrder', sortOrder);
         }
-        if (filters?.dueDate) {
-          params.append('dueDate', filters.dueDate);
+        if (status) {
+          params.append('status', status);
+        }
+        if (priority) {
+          params.append('priority', priority);
+        }
+        if (dueDate) {
+          params.append('dueDate', dueDate);
         }
         const response = await axiosInstance.get(`${API_ROUTES.Tasks.getTasks}?${params.toString()}`);
         return response.data;
