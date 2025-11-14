@@ -1,8 +1,65 @@
 @import "tailwindcss";
 
 :root {
+  /* Light theme (default) */
   --background: #ffffff;
   --foreground: #171717;
+  --card-bg: #ffffff;
+  --card-border: #e5e7eb;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --secondary: #64748b;
+  --text-primary: #171717;
+  --text-secondary: #6b7280;
+  --border: #e5e7eb;
+  --input-bg: #f9fafb;
+  --input-border: #d1d5db;
+  --success: #10b981;
+  --error: #ef4444;
+  --warning: #f59e0b;
+  --info: #3b82f6;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark theme */
+    --background: #0f172a;
+    --foreground: #f1f5f9;
+    --card-bg: #1e293b;
+    --card-border: #334155;
+    --primary: #3b82f6;
+    --primary-hover: #2563eb;
+    --secondary: #64748b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --border: #334155;
+    --input-bg: #1e293b;
+    --input-border: #475569;
+    --success: #10b981;
+    --error: #ef4444;
+    --warning: #f59e0b;
+    --info: #3b82f6;
+  }
+}
+
+/* Force dark theme */
+:root {
+  --background: #0f172a;
+  --foreground: #f1f5f9;
+  --card-bg: #1e293b;
+  --card-border: #334155;
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --secondary: #64748b;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --border: #334155;
+  --input-bg: #1e293b;
+  --input-border: #475569;
+  --success: #10b981;
+  --error: #ef4444;
+  --warning: #f59e0b;
+  --info: #3b82f6;
 }
 
 @theme inline {
@@ -12,15 +69,445 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+}
+
+/* Custom scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--card-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary);
+}
+
+/* Material React Table Dark Theme Styles */
+.task-table-wrapper .MuiTablePagination-root,
+.task-table-wrapper .MuiTablePagination-toolbar,
+.task-table-wrapper .MuiTablePagination-selectLabel,
+.task-table-wrapper .MuiTablePagination-displayedRows,
+.task-table-wrapper .MuiTablePagination-select {
+  color: #f1f5f9 !important;
+}
+
+.task-table-wrapper .MuiTablePagination-selectLabel {
+  color: #94a3b8 !important;
+}
+
+.task-table-wrapper .MuiTablePagination-selectIcon {
+  color: #94a3b8 !important;
+}
+
+/* Toolbar controls styling - All Material React Table toolbar buttons */
+.task-table-wrapper button,
+.task-table-wrapper .MuiIconButton-root,
+.task-table-wrapper .MuiButton-root,
+.task-table-wrapper .MuiToggleButton-root {
+  color: #94a3b8 !important;
+}
+
+.task-table-wrapper button:hover,
+.task-table-wrapper .MuiIconButton-root:hover,
+.task-table-wrapper .MuiButton-root:hover,
+.task-table-wrapper .MuiToggleButton-root:hover {
+  background-color: #334155 !important;
+  color: #f1f5f9 !important;
+}
+
+.task-table-wrapper .MuiToggleButton-root {
+  border-color: #475569 !important;
+}
+
+.task-table-wrapper .MuiToggleButton-root.Mui-selected {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+  border-color: #3b82f6 !important;
+}
+
+.task-table-wrapper .MuiToggleButton-root.Mui-selected:hover {
+  background-color: #2563eb !important;
+}
+
+.task-table-wrapper .MuiSvgIcon-root {
+  color: #94a3b8 !important;
+}
+
+.task-table-wrapper .MuiToggleButton-root.Mui-selected .MuiSvgIcon-root {
+  color: #ffffff !important;
+}
+
+/* Specific Material React Table toolbar classes */
+.task-table-wrapper [class*="MRT-ToolbarInternalButtons"] button,
+.task-table-wrapper [class*="MRT-ToolbarInternalButtons"] .MuiIconButton-root,
+.task-table-wrapper [class*="MRT-ToolbarInternalButtons"] .MuiButton-root {
+  color: #94a3b8 !important;
+}
+
+.task-table-wrapper [class*="MRT-ToolbarInternalButtons"] button:hover,
+.task-table-wrapper [class*="MRT-ToolbarInternalButtons"] .MuiIconButton-root:hover,
+.task-table-wrapper [class*="MRT-ToolbarInternalButtons"] .MuiButton-root:hover {
+  background-color: #334155 !important;
+  color: #f1f5f9 !important;
+}
+
+.task-table-wrapper [class*="MRT-ToolbarInternalButtons"] .MuiToggleButton-root {
+  color: #94a3b8 !important;
+  border-color: #475569 !important;
+}
+
+.task-table-wrapper [class*="MRT-ToolbarInternalButtons"] .MuiToggleButton-root:hover {
+  background-color: #334155 !important;
+  color: #f1f5f9 !important;
+}
+
+.task-table-wrapper [class*="MRT-ToolbarInternalButtons"] .MuiToggleButton-root.Mui-selected {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+  border-color: #3b82f6 !important;
+}
+
+.task-table-wrapper [class*="MRT-ToolbarInternalButtons"] .MuiToggleButton-root.Mui-selected:hover {
+  background-color: #2563eb !important;
+}
+
+.task-table-wrapper [class*="MRT-ToolbarInternalButtons"] .MuiSvgIcon-root {
+  color: #94a3b8 !important;
+}
+
+.task-table-wrapper [class*="MRT-ToolbarInternalButtons"] .MuiToggleButton-root.Mui-selected .MuiSvgIcon-root {
+  color: #ffffff !important;
+}
+
+/* Filter dropdowns and menus */
+.task-table-wrapper .MuiPopover-paper,
+.task-table-wrapper .MuiMenu-paper,
+.task-table-wrapper .MuiPaper-root {
+  background-color: #1e293b !important;
+  color: #f1f5f9 !important;
+  border: 1px solid #334155 !important;
+}
+
+.task-table-wrapper .MuiMenuItem-root {
+  color: #f1f5f9 !important;
+  background-color: #1e293b !important;
+}
+
+.task-table-wrapper .MuiMenuItem-root:hover {
+  background-color: #334155 !important;
+  color: #f1f5f9 !important;
+}
+
+.task-table-wrapper .MuiMenuItem-root.Mui-selected {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+}
+
+.task-table-wrapper .MuiMenuItem-root.Mui-selected:hover {
+  background-color: #2563eb !important;
+}
+
+/* Filter input fields */
+.task-table-wrapper .MuiTextField-root .MuiInputBase-root,
+.task-table-wrapper .MuiTextField-root .MuiOutlinedInput-root {
+  background-color: #1e293b !important;
+  color: #f1f5f9 !important;
+}
+
+.task-table-wrapper .MuiTextField-root .MuiInputBase-input,
+.task-table-wrapper .MuiTextField-root .MuiOutlinedInput-input {
+  color: #f1f5f9 !important;
+}
+
+.task-table-wrapper .MuiTextField-root .MuiInputLabel-root {
+  color: #94a3b8 !important;
+}
+
+.task-table-wrapper .MuiTextField-root .MuiOutlinedInput-notchedOutline {
+  border-color: #475569 !important;
+}
+
+.task-table-wrapper .MuiTextField-root .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #64748b !important;
+}
+
+.task-table-wrapper .MuiTextField-root .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #3b82f6 !important;
+}
+
+.task-table-wrapper .MuiTextField-root .MuiInputBase-input::placeholder {
+  color: #64748b !important;
+  opacity: 1;
+}
+
+/* Select dropdowns */
+.task-table-wrapper .MuiSelect-root {
+  color: #f1f5f9 !important;
+}
+
+.task-table-wrapper .MuiSelect-icon {
+  color: #94a3b8 !important;
+}
+
+.task-table-wrapper .MuiSelect-select {
+  color: #f1f5f9 !important;
+}
+
+.task-table-wrapper .MuiSelect-select:focus {
+  background-color: transparent !important;
+}
+
+/* Form controls */
+.task-table-wrapper .MuiFormControl-root .MuiInputLabel-root {
+  color: #94a3b8 !important;
+}
+
+.task-table-wrapper .MuiFormControl-root .MuiInputLabel-root.Mui-focused {
+  color: #3b82f6 !important;
+}
+
+.task-table-wrapper .MuiFormControl-root .MuiFormHelperText-root {
+  color: #94a3b8 !important;
+}
+
+/* Checkboxes and radio buttons */
+.task-table-wrapper .MuiCheckbox-root {
+  color: #94a3b8 !important;
+}
+
+.task-table-wrapper .MuiCheckbox-root.Mui-checked {
+  color: #3b82f6 !important;
+}
+
+.task-table-wrapper .MuiRadio-root {
+  color: #94a3b8 !important;
+}
+
+.task-table-wrapper .MuiRadio-root.Mui-checked {
+  color: #3b82f6 !important;
+}
+
+/* List items */
+.task-table-wrapper .MuiListItem-root {
+  color: #f1f5f9 !important;
+}
+
+.task-table-wrapper .MuiListItem-root:hover {
+  background-color: #334155 !important;
+}
+
+.task-table-wrapper .MuiListItem-root.Mui-selected {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+}
+
+.task-table-wrapper .MuiListItem-root.Mui-selected:hover {
+  background-color: #2563eb !important;
+}
+
+/* Divider */
+.task-table-wrapper .MuiDivider-root {
+  border-color: #334155 !important;
+}
+
+/* Typography in menus */
+.task-table-wrapper .MuiTypography-root {
+  color: #f1f5f9 !important;
+}
+
+.task-table-wrapper .MuiList-root {
+  background-color: #1e293b !important;
+  color: #f1f5f9 !important;
+}
+
+/* Global Material-UI components outside wrapper (for popovers that render in portal) */
+.MuiPopover-paper,
+.MuiMenu-paper,
+.MuiPaper-root[class*="MuiPopover"],
+.MuiPaper-root[class*="MuiMenu"] {
+  background-color: #1e293b !important;
+  color: #f1f5f9 !important;
+  border: 1px solid #334155 !important;
+}
+
+.MuiMenuItem-root {
+  color: #f1f5f9 !important;
+  background-color: #1e293b !important;
+}
+
+.MuiMenuItem-root:hover {
+  background-color: #334155 !important;
+  color: #f1f5f9 !important;
+}
+
+.MuiMenuItem-root.Mui-selected {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+}
+
+.MuiMenuItem-root.Mui-selected:hover {
+  background-color: #2563eb !important;
+}
+
+/* Filter column inputs */
+.MuiTextField-root .MuiInputBase-root,
+.MuiTextField-root .MuiOutlinedInput-root {
+  background-color: #1e293b !important;
+  color: #f1f5f9 !important;
+}
+
+.MuiTextField-root .MuiInputBase-input,
+.MuiTextField-root .MuiOutlinedInput-input {
+  color: #f1f5f9 !important;
+}
+
+.MuiTextField-root .MuiInputLabel-root {
+  color: #94a3b8 !important;
+}
+
+.MuiTextField-root .MuiOutlinedInput-notchedOutline {
+  border-color: #475569 !important;
+}
+
+.MuiTextField-root .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #64748b !important;
+}
+
+.MuiTextField-root .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #3b82f6 !important;
+}
+
+.MuiTextField-root .MuiInputBase-input::placeholder {
+  color: #64748b !important;
+  opacity: 1;
+}
+
+/* Select dropdowns in filters */
+.MuiSelect-root {
+  color: #f1f5f9 !important;
+}
+
+.MuiSelect-icon {
+  color: #94a3b8 !important;
+}
+
+.MuiSelect-select {
+  color: #f1f5f9 !important;
+  background-color: #1e293b !important;
+}
+
+.MuiSelect-select:focus {
+  background-color: transparent !important;
+}
+
+.MuiSelect-outlined {
+  border-color: #475569 !important;
+}
+
+.MuiSelect-outlined:hover {
+  border-color: #64748b !important;
+}
+
+.MuiSelect-outlined.Mui-focused {
+  border-color: #3b82f6 !important;
+}
+
+/* Material React Table Sorting Icons */
+.task-table-wrapper .MuiTableSortLabel-root,
+.task-table-wrapper .MuiTableSortLabel-icon {
+  color: #94a3b8 !important;
+}
+
+.task-table-wrapper .MuiTableSortLabel-root:hover {
+  color: #f1f5f9 !important;
+}
+
+.task-table-wrapper .MuiTableSortLabel-root.Mui-active {
+  color: #3b82f6 !important;
+}
+
+.task-table-wrapper .MuiTableSortLabel-root.Mui-active .MuiTableSortLabel-icon {
+  color: #3b82f6 !important;
+}
+
+.task-table-wrapper .MuiTableSortLabel-iconDirectionAsc {
+  color: #94a3b8 !important;
+}
+
+.task-table-wrapper .MuiTableSortLabel-iconDirectionDesc {
+  color: #94a3b8 !important;
+}
+
+.task-table-wrapper .MuiTableSortLabel-root.Mui-active .MuiTableSortLabel-iconDirectionAsc,
+.task-table-wrapper .MuiTableSortLabel-root.Mui-active .MuiTableSortLabel-iconDirectionDesc {
+  color: #3b82f6 !important;
+}
+
+/* Global Material React Table Sorting Icons (for elements outside wrapper) */
+.MuiTableSortLabel-root,
+.MuiTableSortLabel-icon {
+  color: #94a3b8 !important;
+}
+
+.MuiTableSortLabel-root:hover {
+  color: #f1f5f9 !important;
+}
+
+.MuiTableSortLabel-root.Mui-active {
+  color: #3b82f6 !important;
+}
+
+.MuiTableSortLabel-root.Mui-active .MuiTableSortLabel-icon {
+  color: #3b82f6 !important;
+}
+
+.MuiTableSortLabel-iconDirectionAsc,
+.MuiTableSortLabel-iconDirectionDesc {
+  color: #94a3b8 !important;
+}
+
+.MuiTableSortLabel-root.Mui-active .MuiTableSortLabel-iconDirectionAsc,
+.MuiTableSortLabel-root.Mui-active .MuiTableSortLabel-iconDirectionDesc {
+  color: #3b82f6 !important;
+}
+
+/* Modal Styles - Ensure modals appear above everything */
+.modal-backdrop {
+  z-index: 9998 !important;
+}
+
+.modal-content {
+  z-index: 9999 !important;
+}
+
+/* Select dropdown options in modals */
+select option {
+  background-color: #1e293b !important;
+  color: #f1f5f9 !important;
+}
+
+/* Date input styling for dark theme */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+input[type="date"]::-webkit-datetime-edit-text,
+input[type="date"]::-webkit-datetime-edit-month-field,
+input[type="date"]::-webkit-datetime-edit-day-field,
+input[type="date"]::-webkit-datetime-edit-year-field {
+  color: #f1f5f9 !important;
 }
